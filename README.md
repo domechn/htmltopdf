@@ -2,6 +2,8 @@
 
 Convert a self-contained HTML file to PDF entirely in the browser. The app is a static frontend build and can be deployed directly to GitHub Pages.
 
+[Try it!](https://xpdf.domc.me)
+
 ## Features
 
 - Single-button interface with click-to-select and drag-and-drop support.
