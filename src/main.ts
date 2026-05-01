@@ -433,9 +433,7 @@ function measureVisualPageHeight(frameDocument: Document): number {
       }
 
       const marginBottom = documentWindow
-        ? parseCssPixels(
-            documentWindow.getComputedStyle(element).marginBottom,
-          )
+        ? parseCssPixels(documentWindow.getComputedStyle(element).marginBottom)
         : 0;
 
       return rect.bottom + marginBottom;
