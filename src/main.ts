@@ -518,7 +518,11 @@ function collectPageLinks(frameDocument: Document): PageLink[] {
     try {
       const url = new URL(href, frameDocument.baseURI);
 
-      if (url.protocol !== "http:" && url.protocol !== "https:") {
+      if (
+        url.protocol !== "http:" &&
+        url.protocol !== "https:" &&
+        url.protocol !== "mailto:"
+      ) {
         continue;
       }
 
