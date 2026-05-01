@@ -180,8 +180,9 @@ async function convertSelectedFile(file: File): Promise<void> {
         exportRoot,
         buildCanvasOptions(exportSize),
       );
+      const pageLinks = collectPageLinks(renderFrame.contentDocument!);
 
-      saveCanvasAsPdf(exportCanvas, file.name, exportSize);
+      saveCanvasAsPdf(exportCanvas, file.name, exportSize, pageLinks);
     } finally {
       captureHost.remove();
     }
@@ -315,7 +316,20 @@ async function prepareFrameForExport(
   await waitForRenderReady(frameDocument);
   applyPageBackground(frameDocument);
 
-  return measureRenderDocument(renderFrame, frameDocument);
+  const { width, height, captureHeight } = measureDocumentSize(
+    renderFrame,
+    frameDocument,
+  );
+
+  return {
+    height,
+    captureHeight,
+    width,
+    windowHeight: captureHeight,
+    windowWidth: width,
+    x: 0,
+    y: 0,
+  };
 }
 
 function applyPageBackground(frameDocument: Document): void {
@@ -357,67 +371,34 @@ function isTransparentColor(color: string): boolean {
   );
 }
 
-function measureRenderDocument(
-  renderFrame: HTMLIFrameElement,
-  frameDocument: Document,
-): ExportSize {
-  const documentSize = measureDocumentSize(renderFrame, frameDocument);
-
-  return {
-    height: documentSize.height,
-    captureHeight: documentSize.captureHeight,
-    width: documentSize.width,
-    windowHeight: documentSize.captureHeight,
-    windowWidth: documentSize.width,
-    x: 0,
-    y: 0,
-  };
-}
-
 function measureDocumentSize(
   renderFrame: HTMLIFrameElement,
   frameDocument: Document,
-): ExportDimensions {
+): { width: number; height: number; captureHeight: number } {
   const documentElement = frameDocument.documentElement;
   const body = frameDocument.body;
   const rootRect = documentElement.getBoundingClientRect();
   const bodyRect = body.getBoundingClientRect();
   const visualHeight = measureVisualPageHeight(frameDocument);
-  const exportHeight = measureExportHeight(
-    visualHeight,
-    bodyRect,
-    body.scrollHeight,
-  );
-
-  return {
-    width: Math.max(
+  const height = Math.ceil(
+    Math.max(
       1,
-      Math.ceil(documentElement.scrollWidth),
-      Math.ceil(body.scrollWidth),
-      Math.ceil(rootRect.width),
-      Math.ceil(bodyRect.width),
-      Math.ceil(renderFrame.clientWidth),
+      visualHeight,
+      body.scrollHeight,
+      bodyRect.bottom,
+      bodyRect.height,
     ),
-    captureHeight: exportHeight.captureHeight,
-    height: exportHeight.height,
-  };
-}
-
-function measureExportHeight(
-  visualHeight: number,
-  bodyRect: DOMRect,
-  bodyScrollHeight: number,
-): ExportHeight {
-  const fullHeight = Math.max(
-    1,
-    visualHeight,
-    bodyScrollHeight,
-    bodyRect.bottom,
-    bodyRect.height,
   );
-  const height = Math.ceil(fullHeight);
+  const width = Math.max(
+    1,
+    Math.ceil(documentElement.scrollWidth),
+    Math.ceil(body.scrollWidth),
+    Math.ceil(rootRect.width),
+    Math.ceil(bodyRect.width),
+    Math.ceil(renderFrame.clientWidth),
+  );
 
-  return { captureHeight: height, height };
+  return { width, height, captureHeight: height };
 }
 
 function measureVisualPageHeight(frameDocument: Document): number {
@@ -463,13 +444,12 @@ function getBoxSpacing(
   }
 
   const computedStyle = elementWindow.getComputedStyle(element);
-  const propertyPrefix = property === "margin" ? "margin" : "padding";
 
   return {
-    bottom: parseCssPixels(computedStyle[`${propertyPrefix}Bottom`]),
-    left: parseCssPixels(computedStyle[`${propertyPrefix}Left`]),
-    right: parseCssPixels(computedStyle[`${propertyPrefix}Right`]),
-    top: parseCssPixels(computedStyle[`${propertyPrefix}Top`]),
+    bottom: parseCssPixels(computedStyle[`${property}Bottom`]),
+    left: parseCssPixels(computedStyle[`${property}Left`]),
+    right: parseCssPixels(computedStyle[`${property}Right`]),
+    top: parseCssPixels(computedStyle[`${property}Top`]),
   };
 }
 
@@ -497,6 +477,7 @@ function saveCanvasAsPdf(
   exportCanvas: HTMLCanvasElement,
   sourceName: string,
   exportSize: ExportSize,
+  pageLinks: PageLink[],
 ): void {
   const pdfDocument = new jsPDF({
     format: [exportSize.width, exportSize.height],
@@ -513,15 +494,58 @@ function saveCanvasAsPdf(
     exportSize.width,
     exportSize.height,
   );
+  for (const link of pageLinks) {
+    pdfDocument.link(link.x, link.y, link.width, link.height, {
+      url: link.url,
+    });
+  }
   pdfDocument.save(toPdfFilename(sourceName));
+}
+
+function collectPageLinks(frameDocument: Document): PageLink[] {
+  const links: PageLink[] = [];
+  const anchors = frameDocument.querySelectorAll<HTMLAnchorElement>("a[href]");
+
+  for (const anchor of anchors) {
+    const href = anchor.getAttribute("href");
+
+    if (!href) {
+      continue;
+    }
+
+    let resolvedUrl: string;
+
+    try {
+      const url = new URL(href, frameDocument.baseURI);
+
+      if (url.protocol !== "http:" && url.protocol !== "https:") {
+        continue;
+      }
+
+      resolvedUrl = url.href;
+    } catch {
+      continue;
+    }
+
+    for (const rect of anchor.getClientRects()) {
+      if (rect.width > 0 && rect.height > 0) {
+        links.push({
+          height: rect.height,
+          url: resolvedUrl,
+          width: rect.width,
+          x: rect.left,
+          y: rect.top,
+        });
+      }
+    }
+  }
+
+  return links;
 }
 
 async function waitForRenderReady(frameDocument: Document): Promise<void> {
   await nextFrame();
-
-  const images = Array.from(frameDocument.images);
-
-  await Promise.all(images.map(async (image) => waitForImageLoad(image)));
+  await Promise.all(Array.from(frameDocument.images).map(waitForImageLoad));
   await nextFrame();
 }
 
@@ -537,13 +561,7 @@ function waitForImageLoad(image: HTMLImageElement): Promise<void> {
 }
 
 function nextFrame(): Promise<void> {
-  return new Promise((resolve) => {
-    const scheduleFrame =
-      window.requestAnimationFrame ??
-      ((callback: FrameRequestCallback) => window.setTimeout(callback, 0));
-
-    scheduleFrame(() => resolve());
-  });
+  return new Promise((resolve) => requestAnimationFrame(() => resolve()));
 }
 
 function toPdfFilename(sourceName: string): string {
@@ -566,17 +584,6 @@ interface ExportSize {
   windowHeight: number;
 }
 
-interface ExportDimensions {
-  width: number;
-  height: number;
-  captureHeight: number;
-}
-
-interface ExportHeight {
-  height: number;
-  captureHeight: number;
-}
-
 interface CanvasExportOptions {
   backgroundColor: string;
   height: number;
@@ -587,6 +594,14 @@ interface CanvasExportOptions {
   windowWidth: number;
   x: number;
   y: number;
+}
+
+interface PageLink {
+  x: number;
+  y: number;
+  width: number;
+  height: number;
+  url: string;
 }
 
 interface BoxSpacing {

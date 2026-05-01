@@ -16,11 +16,13 @@ const mocks = vi.hoisted(() => {
       ) => Promise<HTMLCanvasElement>
     >();
   const addImage = vi.fn();
+  const link = vi.fn();
   const rect = vi.fn();
   const save = vi.fn();
   const setFillColor = vi.fn();
   const jsPdfInstance = {
     addImage,
+    link,
     rect,
     save,
     setFillColor,
@@ -37,6 +39,7 @@ const mocks = vi.hoisted(() => {
     html2canvas,
     jsPDF,
     jsPdfInstance,
+    link,
     rect,
     sanitize,
     save,
