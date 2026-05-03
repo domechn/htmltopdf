@@ -2,7 +2,7 @@ import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 
 const mocks = vi.hoisted(() => {
   const sanitize = vi.fn<(input: string) => string>();
-  const toDataURL = vi.fn(() => "data:image/png;base64,canvas");
+  const toDataURL = vi.fn(() => "data:image/jpeg;base64,canvas");
   const canvas = {
     height: 900,
     toDataURL,
@@ -251,6 +251,20 @@ describe("main app", () => {
         }),
       );
       expect(mocks.addImage).toHaveBeenCalledTimes(1);
+      expect(mocks.toDataURL).toHaveBeenCalledWith(
+        "image/jpeg",
+        expect.any(Number),
+      );
+      expect(mocks.addImage).toHaveBeenCalledWith(
+        "data:image/jpeg;base64,canvas",
+        "JPEG",
+        0,
+        0,
+        canvasOptions!.width,
+        canvasOptions!.height,
+        undefined,
+        "MEDIUM",
+      );
       expect(mocks.save).toHaveBeenCalledWith("report.pdf");
     });
 
@@ -346,7 +360,7 @@ describe("main app", () => {
         })),
       })),
       height: sourceHeight,
-      toDataURL: vi.fn(() => "data:image/png;base64,uncropped"),
+      toDataURL: vi.fn(() => "data:image/jpeg;base64,uncropped"),
       width: sourceWidth,
     };
     const drawImage = vi.fn();
@@ -405,7 +419,10 @@ describe("main app", () => {
 
     expect(drawImage).not.toHaveBeenCalled();
     expect(unexpectedCroppedCanvas.toDataURL).not.toHaveBeenCalled();
-    expect(sourceCanvas.toDataURL).toHaveBeenCalledWith("image/png");
+    expect(sourceCanvas.toDataURL).toHaveBeenCalledWith(
+      "image/jpeg",
+      expect.any(Number),
+    );
     expect(mocks.jsPDF).toHaveBeenCalledWith(
       expect.objectContaining({
         format: [1400, 900],
@@ -413,12 +430,14 @@ describe("main app", () => {
       }),
     );
     expect(mocks.addImage).toHaveBeenCalledWith(
-      "data:image/png;base64,uncropped",
-      "PNG",
+      "data:image/jpeg;base64,uncropped",
+      "JPEG",
       0,
       0,
       1400,
       900,
+      undefined,
+      "MEDIUM",
     );
   });
 
@@ -460,6 +479,7 @@ describe("main app", () => {
     expect(canvasOptions).toEqual(
       expect.objectContaining({
         height: 320,
+        scale: 2,
         windowHeight: 320,
       }),
     );
@@ -543,6 +563,7 @@ describe("main app", () => {
         y: 0,
       }),
     );
+    expect(canvasOptions?.scale).toBeCloseTo(1.62, 2);
     expect(renderTarget.style.background).toContain("radial-gradient");
     expect(mocks.jsPDF).toHaveBeenCalledWith(
       expect.objectContaining({
@@ -551,12 +572,14 @@ describe("main app", () => {
       }),
     );
     expect(mocks.addImage).toHaveBeenCalledWith(
-      "data:image/png;base64,canvas",
-      "PNG",
+      "data:image/jpeg;base64,canvas",
+      "JPEG",
       0,
       0,
       1505,
       2534,
+      undefined,
+      "MEDIUM",
     );
   });
 

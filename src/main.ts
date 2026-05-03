@@ -7,6 +7,13 @@ const defaultButtonLabel = "Choose HTML File";
 const defaultConfirmLabel = "Convert to PDF";
 const busyButtonLabel = "Converting...";
 const maxExportViewportWidth = 1505;
+const maxExportCanvasScale = 2;
+const minExportCanvasScale = 1;
+const maxExportCanvasPixels = 10_000_000;
+const pdfImageCompression = "MEDIUM";
+const pdfImageFormat = "JPEG";
+const pdfImageMimeType = "image/jpeg";
+const pdfImageQuality = 0.86;
 
 const app = document.querySelector<HTMLDivElement>("#app");
 
@@ -463,7 +470,7 @@ function buildCanvasOptions(exportSize: ExportSize): CanvasExportOptions {
   return {
     backgroundColor: "#ffffff",
     height: exportSize.captureHeight,
-    scale: 2,
+    scale: getExportCanvasScale(exportSize),
     useCORS: true,
     width: exportSize.width,
     windowHeight: exportSize.windowHeight,
@@ -471,6 +478,22 @@ function buildCanvasOptions(exportSize: ExportSize): CanvasExportOptions {
     x: exportSize.x,
     y: exportSize.y,
   };
+}
+
+function getExportCanvasScale(exportSize: ExportSize): number {
+  const pixelCount = exportSize.width * exportSize.captureHeight;
+
+  if (pixelCount <= 0) {
+    return maxExportCanvasScale;
+  }
+
+  const idealScale = Math.sqrt(maxExportCanvasPixels / pixelCount);
+
+  return clampNumber(idealScale, minExportCanvasScale, maxExportCanvasScale);
+}
+
+function clampNumber(value: number, min: number, max: number): number {
+  return Math.min(max, Math.max(min, value));
 }
 
 function saveCanvasAsPdf(
@@ -486,13 +509,17 @@ function saveCanvasAsPdf(
       exportSize.width > exportSize.height ? "landscape" : "portrait",
     unit: "px",
   });
+  const imageData = exportCanvas.toDataURL(pdfImageMimeType, pdfImageQuality);
+
   pdfDocument.addImage(
-    exportCanvas.toDataURL("image/png"),
-    "PNG",
+    imageData,
+    pdfImageFormat,
     0,
     0,
     exportSize.width,
     exportSize.height,
+    undefined,
+    pdfImageCompression,
   );
   for (const link of pageLinks) {
     pdfDocument.link(link.x, link.y, link.width, link.height, {
