@@ -168,6 +168,22 @@ describe("main app", () => {
     expect(document.body.textContent).toContain("processed locally");
   });
 
+  it("renders the privacy note in a footer at the bottom of the page", async () => {
+    await import("./main.ts");
+
+    const appShell = document.querySelector<HTMLElement>(".app-shell");
+    const footer = document.querySelector<HTMLElement>(".app-footer");
+    const privacyLink = document.querySelector<HTMLAnchorElement>(
+      ".privacy-note a",
+    );
+
+    expect(appShell?.lastElementChild).toBe(footer);
+    expect(footer).not.toBeNull();
+    expect(footer?.textContent).toContain("Google AdSense");
+    expect(privacyLink?.getAttribute("href")).toBe("/privacy.html");
+    expect(privacyLink?.textContent).toContain("Privacy Policy");
+  });
+
   it("opens the file picker when the button is clicked", async () => {
     await import("./main.ts");
 

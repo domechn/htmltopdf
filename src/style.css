@@ -34,6 +34,16 @@ input {
   display: flex;
   flex-direction: column;
   align-items: center;
+}
+
+.app-hero {
+  width: 100%;
+  max-width: 800px;
+  flex: 1;
+  padding: 24px 0 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
   justify-content: center;
   gap: 18px;
 }
@@ -147,13 +157,62 @@ input {
   opacity: 0.84;
 }
 
+.app-footer {
+  width: 100%;
+  max-width: 800px;
+  margin-top: auto;
+  padding: 12px 0 8px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 14px;
+}
+
 .privacy-note {
-  max-width: 32rem;
+  max-width: 38rem;
   margin: 0;
   text-align: center;
-  color: rgba(31, 41, 55, 0.82);
-  font-size: 0.96rem;
-  line-height: 1.55;
+  color: rgba(31, 41, 55, 0.58);
+  font-size: 0.83rem;
+  line-height: 1.7;
+}
+
+.app-link {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.3rem;
+  margin-left: 0.45rem;
+  padding: 0.28rem 0.78rem;
+  border-radius: 999px;
+  color: #8c2f23;
+  background: rgba(196, 92, 47, 0.1);
+  box-shadow: inset 0 0 0 1px rgba(140, 47, 35, 0.12);
+  font-size: 0.82rem;
+  font-weight: 600;
+  letter-spacing: 0.01em;
+  text-decoration: none;
+  transition:
+    transform 160ms ease,
+    background-color 160ms ease,
+    box-shadow 160ms ease,
+    color 160ms ease;
+}
+
+.app-link:hover {
+  transform: translateY(-1px);
+  color: #6f241b;
+  background: rgba(196, 92, 47, 0.15);
+  box-shadow: inset 0 0 0 1px rgba(140, 47, 35, 0.2);
+}
+
+.app-link:focus-visible {
+  outline: 3px solid rgba(140, 47, 35, 0.18);
+  outline-offset: 3px;
+}
+
+.app-link--quiet {
+  white-space: nowrap;
 }
 
 .pdf-capture-host {
@@ -201,7 +260,21 @@ input {
     padding: 18px;
   }
 
+  .app-hero {
+    padding-top: 18px;
+  }
+
   .file-trigger {
     width: 100%;
+  }
+
+  .app-footer {
+    gap: 12px;
+    padding-bottom: 2px;
+  }
+
+  .app-link {
+    display: inline-flex;
+    margin: 0.55rem 0 0;
   }
 }

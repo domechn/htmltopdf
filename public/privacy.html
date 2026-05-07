@@ -8,61 +8,198 @@
     <style>
       :root {
         color: #1f2937;
+        background:
+          radial-gradient(circle at top, rgba(255, 203, 112, 0.42), transparent 34%),
+          linear-gradient(180deg, #f8f2e8 0%, #f1e7d6 52%, #ebe4d8 100%);
         font-family: "Avenir Next", Avenir, "Segoe UI", sans-serif;
         line-height: 1.6;
       }
+
+      * {
+        box-sizing: border-box;
+      }
+
       body {
         margin: 0;
-        padding: 32px 24px;
-        max-width: 720px;
-        margin: 0 auto;
-        background: #f8f2e8;
+        min-height: 100vh;
+        background: inherit;
       }
-      h1 { font-size: 1.6rem; margin-bottom: 8px; }
-      h2 { font-size: 1.2rem; margin-top: 28px; }
-      a { color: #c45c2f; }
-      .back-link { display: inline-block; margin-bottom: 24px; font-size: 0.95rem; }
+
+      main {
+        width: min(100%, 760px);
+        min-height: 100vh;
+        margin: 0 auto;
+        padding: 32px 24px 56px;
+        display: flex;
+        align-items: center;
+      }
+
+      .policy-card {
+        width: 100%;
+        padding: 32px;
+        border-radius: 32px;
+        background: rgba(255, 251, 244, 0.84);
+        box-shadow:
+          0 28px 60px rgba(99, 67, 31, 0.14),
+          inset 0 0 0 1px rgba(140, 47, 35, 0.08);
+        backdrop-filter: blur(10px);
+      }
+
+      h1 {
+        margin: 0 0 8px;
+        font-size: clamp(1.75rem, 3vw, 2.1rem);
+        line-height: 1.1;
+        letter-spacing: -0.03em;
+      }
+
+      h2 {
+        margin: 28px 0 10px;
+        font-size: 1.1rem;
+        letter-spacing: -0.01em;
+      }
+
+      p,
+      li {
+        color: rgba(31, 41, 55, 0.78);
+      }
+
+      ul {
+        padding-left: 1.2rem;
+      }
+
+      .meta {
+        margin: 0 0 24px;
+        color: rgba(31, 41, 55, 0.54);
+        font-size: 0.93rem;
+      }
+
+      .back-link,
+      .action-link {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 0.3rem;
+        padding: 0.6rem 1rem;
+        border-radius: 999px;
+        color: #8c2f23;
+        background: rgba(196, 92, 47, 0.1);
+        box-shadow: inset 0 0 0 1px rgba(140, 47, 35, 0.12);
+        font-weight: 600;
+        text-decoration: none;
+        transition:
+          transform 160ms ease,
+          background-color 160ms ease,
+          box-shadow 160ms ease,
+          color 160ms ease;
+      }
+
+      .back-link:hover,
+      .action-link:hover {
+        transform: translateY(-1px);
+        color: #6f241b;
+        background: rgba(196, 92, 47, 0.15);
+        box-shadow: inset 0 0 0 1px rgba(140, 47, 35, 0.2);
+      }
+
+      .back-link:focus-visible,
+      .action-link:focus-visible,
+      .text-link:focus-visible {
+        outline: 3px solid rgba(140, 47, 35, 0.18);
+        outline-offset: 3px;
+      }
+
+      .back-link {
+        margin-bottom: 28px;
+        font-size: 0.94rem;
+      }
+
+      .text-link {
+        color: #8c2f23;
+        font-weight: 600;
+        text-decoration-color: rgba(140, 47, 35, 0.3);
+        text-decoration-thickness: 0.08em;
+        text-underline-offset: 0.18em;
+      }
+
+      .text-link:hover {
+        color: #6f241b;
+        text-decoration-color: rgba(140, 47, 35, 0.56);
+      }
+
+      .action-row {
+        margin: 14px 0 0;
+      }
+
+      @media (max-width: 640px) {
+        main {
+          padding: 18px 16px 28px;
+          align-items: flex-start;
+        }
+
+        .policy-card {
+          padding: 24px 20px;
+          border-radius: 24px;
+        }
+
+        .back-link,
+        .action-link {
+          width: 100%;
+        }
+      }
     </style>
   </head>
   <body>
-    <a class="back-link" href="/">← Back to HTML to PDF</a>
-    <h1>Privacy Policy</h1>
-    <p>Last updated: May 7, 2026</p>
+    <main>
+      <article class="policy-card">
+        <a class="back-link" href="/">← Back to HTML to PDF</a>
+        <h1>Privacy Policy</h1>
+        <p class="meta">Last updated: May 7, 2026</p>
 
-    <h2>What this tool does</h2>
-    <p>
-      HTML to PDF converts HTML files to PDF documents entirely in your browser.
-      No files are uploaded to any server — all processing happens locally on your device.
-    </p>
+        <h2>What this tool does</h2>
+        <p>
+          HTML to PDF converts HTML files to PDF documents entirely in your browser.
+          No files are uploaded to any server — all processing happens locally on your device.
+        </p>
 
-    <h2>Third-party services</h2>
-    <p>
-      This site uses <strong>Google AdSense</strong> to display advertisements.
-      Google AdSense may use cookies and web beacons to collect data for ad
-      personalization and measurement. This data may include:
-    </p>
-    <ul>
-      <li>Your IP address</li>
-      <li>Browser type and version</li>
-      <li>Pages visited and time spent</li>
-      <li>Referring URL</li>
-    </ul>
-    <p>
-      Google's use of advertising cookies enables it and its partners to serve
-      ads based on your visit to this site and/or other sites on the Internet.
-    </p>
+        <h2>Third-party services</h2>
+        <p>
+          This site uses <strong>Google AdSense</strong> to display advertisements.
+          Google AdSense may use cookies and web beacons to collect data for ad
+          personalization and measurement. This data may include:
+        </p>
+        <ul>
+          <li>Your IP address</li>
+          <li>Browser type and version</li>
+          <li>Pages visited and time spent</li>
+          <li>Referring URL</li>
+        </ul>
+        <p>
+          Google's use of advertising cookies enables it and its partners to serve
+          ads based on your visit to this site and/or other sites on the Internet.
+        </p>
 
-    <h2>Your choices</h2>
-    <p>
-      You can opt out of personalized advertising by visiting
-      <a href="https://adssettings.google.com" target="_blank" rel="noopener">Google Ads Settings</a>.
-      You may also disable cookies in your browser settings.
-    </p>
+        <h2>Your choices</h2>
+        <p>
+          You can opt out of personalized advertising through Google Ads Settings,
+          or disable cookies in your browser settings.
+        </p>
+        <p class="action-row">
+          <a
+            class="action-link"
+            href="https://adssettings.google.com"
+            target="_blank"
+            rel="noopener"
+          >
+            Manage Google Ads Settings
+          </a>
+        </p>
 
-    <h2>Contact</h2>
-    <p>
-      For questions about this privacy policy, open an issue on the
-      <a href="https://github.com/domcgoer/htmltopdf" target="_blank" rel="noopener">GitHub repository</a>.
-    </p>
+        <h2>Contact</h2>
+        <p>
+          For questions about this privacy policy, open an issue on the
+          <a class="text-link" href="https://github.com/domcgoer/htmltopdf" target="_blank" rel="noopener">GitHub repository</a>.
+        </p>
+      </article>
+    </main>
   </body>
 </html>
