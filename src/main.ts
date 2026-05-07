@@ -22,8 +22,23 @@ if (!app) {
 }
 
 app.innerHTML = `
-  <main class="app-shell">
-    <button id="file-trigger" class="file-trigger" type="button">
+  <main class="app-shell" aria-labelledby="app-heading">
+    <h1 id="app-heading" class="app-heading">HTML to PDF Converter</h1>
+    <p class="app-subheading">
+      Convert self-contained HTML files to PDF entirely in your browser.
+      No file upload — private, free, and fast.
+    </p>
+    <div class="ad-slot ad-slot--top">
+      <ins class="adsbygoogle"
+           style="display:block"
+           data-ad-client="ca-pub-7409362530062378"
+           data-ad-slot="3630870817"
+           data-ad-format="auto"
+           data-full-width-responsive="true"></ins>
+      <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
+    </div>
+    <button id="file-trigger" class="file-trigger" type="button"
+            aria-label="Choose an HTML file from your device">
       ${defaultButtonLabel}
     </button>
     <input
@@ -32,20 +47,33 @@ app.innerHTML = `
       type="file"
       accept=".html,.htm,text/html"
       hidden
+      aria-hidden="true"
     />
-    <p id="selection-status" class="selection-status" hidden></p>
+    <p id="selection-status" class="selection-status" hidden aria-live="polite"></p>
     <button
       id="confirm-convert"
       class="confirm-button"
       type="button"
       hidden
       disabled
+      aria-label="Convert the selected HTML file to PDF"
     >
       ${defaultConfirmLabel}
     </button>
     <p class="privacy-note">
       Files never leave your browser. Everything is processed locally on your device.
+      This site uses Google AdSense, which may use cookies to serve personalized ads.
+      <a href="/privacy.html">Privacy Policy</a>
     </p>
+    <div class="ad-slot ad-slot--bottom">
+      <ins class="adsbygoogle"
+           style="display:block"
+           data-ad-client="ca-pub-7409362530062378"
+           data-ad-slot="3630870817"
+           data-ad-format="auto"
+           data-full-width-responsive="true"></ins>
+      <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
+    </div>
   </main>
 `;
 

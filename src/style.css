@@ -38,6 +38,24 @@ input {
   gap: 18px;
 }
 
+.app-heading {
+  margin: 0;
+  font-size: 2rem;
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  text-align: center;
+  color: #1f2937;
+}
+
+.app-subheading {
+  max-width: 32rem;
+  margin: 0;
+  text-align: center;
+  color: rgba(31, 41, 55, 0.72);
+  font-size: 1.04rem;
+  line-height: 1.55;
+}
+
 .file-trigger {
   min-width: min(100%, 360px);
   padding: 20px 28px;
@@ -155,6 +173,19 @@ input {
   display: block;
   border: 0;
   background: #ffffff;
+}
+
+.ad-slot {
+  width: 100%;
+  max-width: 800px;
+  min-height: 90px;
+  display: flex;
+  justify-content: center;
+  overflow: hidden;
+}
+
+.ad-slot ins {
+  width: 100%;
 }
 
 .pdf-render-target {
