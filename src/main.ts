@@ -29,6 +29,10 @@ app.innerHTML = `
         Convert self-contained HTML files to PDF entirely in your browser.
         No file upload — private, free, and fast.
       </p>
+      <button id="file-trigger" class="file-trigger" type="button"
+              aria-label="Choose an HTML file from your device">
+        ${defaultButtonLabel}
+      </button>
       <div class="ad-slot ad-slot--top">
         <ins class="adsbygoogle"
              style="display:block"
@@ -38,10 +42,6 @@ app.innerHTML = `
              data-full-width-responsive="true"></ins>
         <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
       </div>
-      <button id="file-trigger" class="file-trigger" type="button"
-              aria-label="Choose an HTML file from your device">
-        ${defaultButtonLabel}
-      </button>
       <input
         id="html-file-input"
         class="file-input"

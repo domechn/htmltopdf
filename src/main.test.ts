@@ -168,14 +168,25 @@ describe("main app", () => {
     expect(document.body.textContent).toContain("processed locally");
   });
 
+  it("renders the top ad directly below the file chooser button", async () => {
+    await import("./main.ts");
+
+    const chooseButton =
+      document.querySelector<HTMLButtonElement>("#file-trigger");
+    const topAd = document.querySelector<HTMLElement>(".ad-slot--top");
+
+    expect(chooseButton).not.toBeNull();
+    expect(topAd).not.toBeNull();
+    expect(chooseButton?.nextElementSibling).toBe(topAd);
+  });
+
   it("renders the privacy note in a footer at the bottom of the page", async () => {
     await import("./main.ts");
 
     const appShell = document.querySelector<HTMLElement>(".app-shell");
     const footer = document.querySelector<HTMLElement>(".app-footer");
-    const privacyLink = document.querySelector<HTMLAnchorElement>(
-      ".privacy-note a",
-    );
+    const privacyLink =
+      document.querySelector<HTMLAnchorElement>(".privacy-note a");
 
     expect(appShell?.lastElementChild).toBe(footer);
     expect(footer).not.toBeNull();
