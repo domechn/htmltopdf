@@ -33,15 +33,6 @@ app.innerHTML = `
               aria-label="Choose an HTML file from your device">
         ${defaultButtonLabel}
       </button>
-      <div class="ad-slot ad-slot--top">
-        <ins class="adsbygoogle"
-             style="display:block"
-             data-ad-client="ca-pub-7409362530062378"
-             data-ad-slot="3630870817"
-             data-ad-format="auto"
-             data-full-width-responsive="true"></ins>
-        <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
-      </div>
       <input
         id="html-file-input"
         class="file-input"
@@ -63,18 +54,8 @@ app.innerHTML = `
       </button>
     </section>
     <footer class="app-footer">
-      <div class="ad-slot ad-slot--bottom">
-        <ins class="adsbygoogle"
-             style="display:block"
-             data-ad-client="ca-pub-7409362530062378"
-             data-ad-slot="3630870817"
-             data-ad-format="auto"
-             data-full-width-responsive="true"></ins>
-        <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
-      </div>
       <p class="privacy-note">
         Files never leave your browser. Everything is processed locally on your device.
-        This site uses Google AdSense, which may use cookies to serve personalized ads.
         <a class="app-link app-link--quiet" href="/privacy.html">Privacy Policy</a>
       </p>
     </footer>

@@ -234,19 +234,6 @@ input {
   background: #ffffff;
 }
 
-.ad-slot {
-  width: 100%;
-  max-width: 800px;
-  min-height: 90px;
-  display: flex;
-  justify-content: center;
-  overflow: hidden;
-}
-
-.ad-slot ins {
-  width: 100%;
-}
-
 .pdf-render-target {
   display: block;
   width: 794px;
