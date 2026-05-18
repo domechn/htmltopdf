@@ -157,6 +157,15 @@ input {
   opacity: 0.84;
 }
 
+.convert-disclosure {
+  max-width: 26rem;
+  margin: -4px 0 0;
+  text-align: center;
+  color: rgba(31, 41, 55, 0.62);
+  font-size: 0.88rem;
+  line-height: 1.5;
+}
+
 .app-footer {
   width: 100%;
   max-width: 800px;

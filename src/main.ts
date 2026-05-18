@@ -6,6 +6,8 @@ import "./style.css";
 const defaultButtonLabel = "Choose HTML File";
 const defaultConfirmLabel = "Convert to PDF";
 const busyButtonLabel = "Converting...";
+const convertAdUrl =
+  "https://plump-plastic.com/b.3qVK0vPn3rppveb/m/VDJEZvDP0/3cMZDjUJ1sOfTmEdz/LOTNchwhNwTzU-5/MZT/cp";
 const maxExportViewportWidth = 1505;
 const maxExportCanvasScale = 2;
 const minExportCanvasScale = 1;
@@ -52,6 +54,9 @@ app.innerHTML = `
       >
         ${defaultConfirmLabel}
       </button>
+      <p id="convert-disclosure" class="convert-disclosure" hidden>
+        Convert opens a sponsor link in a new tab before your PDF starts downloading.
+      </p>
     </section>
     <footer class="app-footer">
       <p class="privacy-note">
@@ -68,13 +73,17 @@ const appShell = app.querySelector<HTMLElement>(".app-shell");
 const confirmButton = app.querySelector<HTMLButtonElement>("#confirm-convert");
 const selectionStatus =
   app.querySelector<HTMLParagraphElement>("#selection-status");
+const convertDisclosure = app.querySelector<HTMLParagraphElement>(
+  "#convert-disclosure",
+);
 
 if (
   !appShell ||
   !fileTrigger ||
   !fileInput ||
   !confirmButton ||
-  !selectionStatus
+  !selectionStatus ||
+  !convertDisclosure
 ) {
   throw new Error("File picker controls are missing");
 }
@@ -84,6 +93,7 @@ const uploadButton = fileTrigger;
 const uploadInput = fileInput;
 const convertButton = confirmButton;
 const statusMessage = selectionStatus;
+const disclosureMessage = convertDisclosure;
 let pendingFile: File | null = null;
 let dragDepth = 0;
 
@@ -161,6 +171,7 @@ convertButton.addEventListener("click", async () => {
 
   const fileToConvert = pendingFile;
 
+  openConvertAdTab();
   await convertSelectedFile(fileToConvert);
 });
 
@@ -223,12 +234,14 @@ function setBusyState(isBusy: boolean): void {
   uploadButton.textContent = defaultButtonLabel;
   convertButton.disabled = isBusy || pendingFile === null;
   convertButton.hidden = pendingFile === null;
+  disclosureMessage.hidden = pendingFile === null;
   convertButton.textContent = isBusy ? busyButtonLabel : defaultConfirmLabel;
 }
 
 function syncConfirmState(): void {
   convertButton.hidden = pendingFile === null;
   convertButton.disabled = pendingFile === null;
+  disclosureMessage.hidden = pendingFile === null;
   convertButton.textContent = defaultConfirmLabel;
 }
 
@@ -237,6 +250,10 @@ function clearPendingFile(): void {
   statusMessage.hidden = true;
   statusMessage.textContent = "";
   syncConfirmState();
+}
+
+function openConvertAdTab(): void {
+  window.open(convertAdUrl, "_blank", "noopener,noreferrer");
 }
 
 function toggleDragState(isActive: boolean): void {

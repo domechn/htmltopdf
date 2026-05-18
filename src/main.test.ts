@@ -183,6 +183,23 @@ describe("main app", () => {
     expect(privacyLink?.textContent).toContain("Privacy Policy");
   });
 
+  it("renders a sponsor disclosure next to the convert action", async () => {
+    await import("./main.ts");
+
+    const confirmButton =
+      document.querySelector<HTMLButtonElement>("#confirm-convert");
+    const disclosure = document.querySelector<HTMLParagraphElement>(
+      "#convert-disclosure",
+    );
+
+    expect(confirmButton).not.toBeNull();
+    expect(disclosure).not.toBeNull();
+    expect(disclosure?.textContent).toContain(
+      "Convert opens a sponsor link in a new tab",
+    );
+    expect(confirmButton?.nextElementSibling).toBe(disclosure);
+  });
+
   it("opens the file picker when the button is clicked", async () => {
     await import("./main.ts");
 
@@ -197,6 +214,48 @@ describe("main app", () => {
     trigger!.click();
 
     expect(clickSpy).toHaveBeenCalledTimes(1);
+  });
+
+  it("opens the ad in a new tab before starting conversion", async () => {
+    const openSpy = vi.spyOn(window, "open").mockImplementation(() => null);
+    mocks.sanitize.mockReturnValue("<section><h1>Clean HTML</h1></section>");
+
+    await import("./main.ts");
+
+    const input = document.querySelector<HTMLInputElement>("#html-file-input");
+    const confirmButton =
+      document.querySelector<HTMLButtonElement>("#confirm-convert");
+    const file = new File(
+      ["<html><body><h1>Unsafe</h1><script>alert(1)</script></body></html>"],
+      "report.html",
+      { type: "text/html" },
+    );
+
+    Object.defineProperty(input!, "files", {
+      configurable: true,
+      value: [file],
+    });
+
+    input!.dispatchEvent(new Event("change", { bubbles: true }));
+    confirmButton!.click();
+
+    expect(openSpy).toHaveBeenCalledWith(
+      "https://plump-plastic.com/b.3qVK0vPn3rppveb/m/VDJEZvDP0/3cMZDjUJ1sOfTmEdz/LOTNchwhNwTzU-5/MZT/cp",
+      "_blank",
+      "noopener,noreferrer",
+    );
+
+    await vi.waitFor(() => {
+      expect(mocks.sanitize).toHaveBeenCalled();
+    });
+
+    await vi.waitFor(() => {
+      expect(mocks.save).toHaveBeenCalledWith("report.pdf");
+    });
+
+    expect(openSpy.mock.invocationCallOrder[0]).toBeLessThan(
+      mocks.sanitize.mock.invocationCallOrder[0]!,
+    );
   });
 
   it("queues a selected html file and waits for confirmation before downloading a pdf", async () => {
