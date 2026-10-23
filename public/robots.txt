@@ -1,5 +1,4 @@
 User-agent: *
 Allow: /
-Disallow: /privacy.html
 
 Sitemap: https://xpdf.domc.me/sitemap.xml

@@ -265,3 +265,28 @@ input {
     margin: 0.55rem 0 0;
   }
 }
+
+.seo-content {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 40px 24px 56px;
+  color: rgba(31, 41, 55, 0.82);
+  line-height: 1.7;
+  font-size: 0.95rem;
+}
+
+.seo-content h2 {
+  margin: 1.8rem 0 0.6rem;
+  font-size: 1.25rem;
+  color: #1f2937;
+}
+
+.seo-content h3 {
+  margin: 1.1rem 0 0.2rem;
+  font-size: 1rem;
+  color: #1f2937;
+}
+
+.seo-content p {
+  margin: 0.3rem 0;
+}

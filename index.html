@@ -5,12 +5,14 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="robots" content="index, follow" />
     <meta name="googlebot" content="index, follow" />
-    <link rel="canonical" href="https://xpdf.domc.me" />
+    <link rel="canonical" href="https://xpdf.domc.me/" />
+    <meta name="theme-color" content="#f1e7d6" />
+    <meta name="author" content="domechn" />
 
     <title>HTML to PDF Converter — Free Online, No Upload, Private</title>
     <meta
       name="description"
-      content="Convert HTML files to PDF directly in your browser. No file upload, no server — everything is processed locally on your device. Free, fast, and private."
+      content="Free online HTML to PDF converter that runs 100% in your browser. No upload, no signup, no server — your files never leave your device. Drag, drop, download."
     />
     <meta
       name="keywords"
@@ -22,19 +24,25 @@
       property="og:description"
       content="Convert HTML files to PDF directly in your browser. No upload, fully private, free to use."
     />
-    <meta property="og:url" content="https://xpdf.domc.me" />
+    <meta property="og:url" content="https://xpdf.domc.me/" />
+    <meta property="og:image" content="https://xpdf.domc.me/og-image.png" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content="HTML to PDF Converter — free, private, no upload" />
     <meta property="og:type" content="website" />
     <meta property="og:site_name" content="HTML to PDF Converter" />
     <meta property="og:locale" content="en_US" />
 
-    <meta name="twitter:card" content="summary" />
+    <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:title" content="HTML to PDF Converter — Free & Private" />
+    <meta name="twitter:image" content="https://xpdf.domc.me/og-image.png" />
     <meta
       name="twitter:description"
       content="Convert HTML files to PDF in your browser. No upload, fully private, free."
     />
 
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="alternate icon" href="/favicon.svg" />
 
     <script type="application/ld+json">
       {
@@ -45,6 +53,9 @@
         "description": "Convert self-contained HTML files to PDF entirely in your browser. No file upload, all processing happens locally.",
         "applicationCategory": "UtilityApplication",
         "operatingSystem": "Any",
+        "inLanguage": "en",
+        "image": "https://xpdf.domc.me/og-image.png",
+        "featureList": ["Client-side conversion, no upload","Drag and drop support","HTML sanitization before rendering","Free, no signup"],
         "browserRequirements": "Requires JavaScript",
         "offers": {
           "@type": "Offer",
@@ -53,10 +64,78 @@
         }
       }
     </script>
-
+    <script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "Is my HTML file uploaded to a server?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "No. The conversion runs entirely in your browser using JavaScript. Your file never leaves your device."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Is the HTML to PDF converter free?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Yes. It is free to use, with no signup, watermark or file-size limit imposed by the site."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "How do I convert an HTML file to PDF?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Choose or drag and drop a .html or .htm file, click Convert to PDF, and the PDF downloads automatically."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Why are my images or styles missing in the PDF?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "The converter works best with self-contained HTML. Inline your CSS and embed images as data URIs, because external files cannot be loaded from a local file."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Is it safe to convert HTML with scripts?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Yes. The HTML is sanitized in your browser before rendering, so scripts are removed and never executed."
+      }
+    }
+  ]
+}
+    </script>
   </head>
   <body>
     <div id="app"></div>
+    <section class="seo-content" aria-labelledby="seo-heading">
+      <h2 id="seo-heading">Free online HTML to PDF converter — private by design</h2>
+      <p>Turn any self-contained HTML file into a PDF without uploading it anywhere. Everything runs locally in your browser, so reports, invoices, resumes and documents stay on your device.</p>
+      <h2>How to convert HTML to PDF</h2>
+      <ol>
+        <li>Choose an <code>.html</code> or <code>.htm</code> file, or drag it onto the page.</li>
+        <li>Click <strong>Convert to PDF</strong>.</li>
+        <li>Your PDF downloads automatically.</li>
+      </ol>
+      <h2>Frequently asked questions</h2>
+      <h3>Is my HTML file uploaded to a server?</h3>
+      <p>No. The conversion runs entirely in your browser using JavaScript. Your file never leaves your device.</p>
+      <h3>Is the HTML to PDF converter free?</h3>
+      <p>Yes. It is free to use, with no signup, watermark or file-size limit imposed by the site.</p>
+      <h3>How do I convert an HTML file to PDF?</h3>
+      <p>Choose or drag and drop a .html or .htm file, click Convert to PDF, and the PDF downloads automatically.</p>
+      <h3>Why are my images or styles missing in the PDF?</h3>
+      <p>The converter works best with self-contained HTML. Inline your CSS and embed images as data URIs, because external files cannot be loaded from a local file.</p>
+      <h3>Is it safe to convert HTML with scripts?</h3>
+      <p>Yes. The HTML is sanitized in your browser before rendering, so scripts are removed and never executed.</p>
+    </section>
     <noscript>
       <main style="max-width:600px;margin:60px auto;padding:24px;font-family:sans-serif;text-align:center;color:#1f2937;">
         <h1>HTML to PDF Converter</h1>
